@@ -6,11 +6,15 @@
  //@param {number} number1
  //@param {number} number2
  //@return {number} product
-const multiplication = () => {
-  return
+const multiplication = (number1, number2) => {
+  let product = 0;
+  for( let i = 0; i < number1; i++){
+    product += number2;
+  }
+  return product;
 }
 
-const answer1 = multiplication()
+const answer1 = multiplication(2,2)
 console.log('answer1', answer1)
 
 const htmlTarget = document.getElementById('a-1')
@@ -25,11 +29,46 @@ htmlTarget.innerHTML = answer1
 
 //@param {string}
 //@return {character} => array of characters
-vowelOrConsonant = () => {
-  return
+
+vowelOrConsonant = (string) => {
+  //declared some var
+  let vowels = [];
+  let constants = [];
+  let length = string.length;
+  let newString = string.toLowerCase();
+  let joinedChar = [];
+
+  for (let i = 0; i < length; i++){
+    let letter = newString[i];
+    //really struggled here since I kept using charAt() w/o realizing it was dependent on a string
+    if (letter == 'a' ||
+    letter == 'e' ||
+    letter == 'i' ||
+    letter == 'o' ||
+    letter == 'u'){
+      vowels.push(newString[i]);
+    }
+    else{
+      constants.push(newString[i]);
+    }
+  }
+  
+  let answer = prompt("Would you like the vowels first? Type yes/no.");
+  answer = answer.toLowerCase();
+  
+  if (answer === "yes"){
+    joinedChar = [...vowels, ...constants];
+   
+  }
+  else if (answer === "no") {
+    joinedChar = [...constants, ...vowels];
+   
+  }
+
+  return joinedChar;  
 }
 
-const answer2 = vowelOrConsonant()
+const answer2 = vowelOrConsonant("tea");
 
 const htmlTarget2 = document.getElementById('a-2')
 htmlTarget2.innerHTML = answer2
@@ -45,11 +84,52 @@ htmlTarget2.innerHTML = answer2
 //where: name, saves the name of the player. Lives, represents the remaining oportunities each time the player fails. Fail_numbers, is an array of numbers that stores the fail numbers the player has used
 
 //@return {string} win / gameOver => the string that says if the user wasted the three oportunities showing the fails numbers or the name if the player wins
+
+
 guessTheNumber  = () => {
-  return
+  let player = {
+    name: "",
+    lives: 3,
+    fail_numbers: [],
+  }
+
+  let name = prompt("What is your name?");
+  player.name = name;
+  let answer;
+  let message;
+
+  const randomNum = parseInt(Math.random()*40 + 10);
+
+  for (let i = player.lives; i > 0; i--){
+    
+    answer = prompt("Guess a value from 10 to 50:")
+    answer = parseInt(answer);
+
+  
+    if (answer === randomNum){
+      alert(`congrats ${player.name.toUpperCase()}! the number was ${randomNum} and your number was ${answer}`);
+      message = "Player wins!";
+      break;
+    }
+    else if (answer !== randomNum){
+      player.fail_numbers.push(answer);
+      player.lives--;
+    }
+    else{
+      alert("You did not enter a value.");
+    }
+
+  }
+  if (player.lives === 0){
+    alert("Sorry, you ran out of tries");
+    message = "Player used up all opportunities.";
+  }
+  
+  return message;
 }
 
 const answer3 = guessTheNumber()
+
 
 const htmlTarget3 = document.getElementById('a-3')
 htmlTarget3.innerHTML = answer3
@@ -80,8 +160,71 @@ sort = () => {
        libraryID: 3245
    }];
 
-  return
+   
+   let choice = prompt("Which property would you like: title, author, libraryID.").toLowerCase();;
+   let sorted = "";
+
+   if (choice === "title"){
+      sorted = sorting("title"); //calling Function
+
+     }   
+   else if (choice === "author"){
+     sorted = sorting("author"); //calling Function
+
+   }
+   else if (choice === "libraryid"){
+   
+    let idList = [];
+    for (book in library){
+      idList.push(library[book].libraryID); //made a new array and sorted it
+    }
+
+    idList.sort(function(a, b){
+      return b-a
+    });
+
+    sorted = `${idList[0]}, ${idList[1]}, ${idList[2]}`;
+   }
+   else{
+     alert("You did not make a selection.");
+   }
+
+   return sorted;
+
+   function sorting (choice) {
+    let newList = "";
+    let a = library[0][choice].length;
+    let b = library[1][choice].length;
+    let c = library[2][choice].length;
+  
+    if (c < a && a < b){ //used the transitivity property and then had the order switched in the newList String
+      newList = `${library[1][choice]}; ${library[0][choice]}; ${library[2][choice]}.`;
+    }
+    else if (a < c && c < b){
+      newList = `${library[1][choice]}; ${library[2][choice]}; ${library[0][choice]}.`;
+    }
+    else if (b < a && a < c){
+      newList = `${library[2][choice]}; ${library[0][choice]}; ${library[1][choice]}.`;
+    }
+    else if (b < c && c < a){
+      newList = `${library[0][choice]}; ${library[2][choice]}; ${library[1][choice]}.`;
+    }
+    else if (c < b && b < a){
+      newList = `${library[0][choice]}; ${library[1][choice]}; ${library[2][choice]}.`;
+    }
+    else{
+      newList = `${library[2][choice]}; ${library[1][choice]}; ${library[0][choice]}.`;
+    }
+  
+    return newList;
+  
+  }
+
+
 }
+
+
+
 
 const answer4 = sort()
 
